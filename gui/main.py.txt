@@ -1,0 +1,39 @@
+from tkinter import *
+from admin import Admin
+from user import User
+
+class Library:
+    def __init__(self):
+        self.books = []
+        self.borrowed_books = []
+
+    def add_book(self, book):
+        self.books.append(book)
+
+    def remove_book(self, index):
+        self.books.pop(index)
+
+    def get_sorted_books(self):
+        return sorted(self.books, key=lambda b: b['title'])
+
+    def borrow_book(self, index):
+        if self.books[index] not in self.borrowed_books:
+            self.borrowed_books.append(self.books[index])
+            return self.books[index]
+
+    def return_last_borrowed(self):
+        return self.borrowed_books.pop() if self.borrowed_books else None
+
+library = Library()
+root = Tk()
+root.title("Library Management System")
+root.geometry("300x200")
+
+admin = Admin(root, library)
+user = User(root, library)
+
+Button(root, text="Admin Login", command=admin.show_admin_menu).pack(pady=20)
+Button(root, text="User Login", command=user.show_user_menu).pack(pady=20)
+Button(root, text="Exit", command=root.quit).pack(pady=20)
+
+root.mainloop()
